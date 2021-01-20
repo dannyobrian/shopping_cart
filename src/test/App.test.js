@@ -2,8 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from '../App';
 
-test(`renders learn react link`, () => {
+test(`renders imported components`, () => {
     render(<App />);
-    const linkElement = screen.getByText(/learn react/i);
-    expect(linkElement).toBeInTheDocument();
+    const CatalogElement = screen.getByText(/Catalog/);
+    expect(CatalogElement).toBeInTheDocument();
+    const ReceiptElement = screen.getByText(/Receipt/);
+    expect(ReceiptElement).toBeInTheDocument();
 });
