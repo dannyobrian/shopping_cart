@@ -44,6 +44,14 @@ const updatePackSize = (item: StockItem, packSizes: PackSize[], add = true): Pac
     }, []);
 };
 
+// cludge to eradicate the dreaded 00000000000001 precision error when performing float calcs
+const float = (val: number) => Number(val.toPrecision(3));
+
+export const nonExportedMethods = {
+    updatePackSize,
+    float,
+};
+
 const basketSlice = createSlice({
     name: `basket`,
     initialState: initialBasketState,
@@ -71,8 +79,7 @@ const basketSlice = createSlice({
                     return index === arrayIndex && item.packSizes
                         ? {
                               sku,
-                              // cludge to eradicate the dreaded 00000000000001 precsiion error when adding floats
-                              size: Number((size * qty + item.size).toPrecision(3)),
+                              size: float(size * qty + item.size),
                               qty: 1,
                               packSizes: updatePackSize(payload, item.packSizes, true),
                           }
@@ -101,7 +108,7 @@ const basketSlice = createSlice({
                             ...acc,
                             {
                                 sku,
-                                size: Number((curr.size - size).toPrecision(3)),
+                                size: float(curr.size - size),
                                 qty,
                                 packSizes: updatePackSize(payload, curr.packSizes, false),
                             },

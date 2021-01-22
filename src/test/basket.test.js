@@ -5,7 +5,7 @@ import { Basket } from '../components';
 import store from '../store';
 import { resetBasket } from '../store/slices/basket.slice';
 
-test(`renders learn react link`, () => {
+test(`renders items in basket text`, () => {
     store.dispatch(resetBasket());
     render(
         <Provider store={store}>

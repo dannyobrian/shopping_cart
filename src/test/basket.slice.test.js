@@ -5,7 +5,10 @@ import reducer, {
     removeUpdateCumulative,
     addUpdateCumulative,
     initialBasketState,
+    nonExportedMethods,
 } from '../store/slices/basket.slice';
+
+const { updatePackSize, float } = nonExportedMethods;
 
 const mockResultStateTP = {
     contents: [{ sku: `toiletPaper`, size: 1, qty: 1 }],
@@ -15,6 +18,13 @@ const mockResultStateTPFM = {
     contents: [
         { sku: `toiletPaper`, size: 1, qty: 1 },
         { sku: `faceMask`, size: 1, qty: 1 },
+    ],
+};
+
+const mockResultStateTPFM2 = {
+    contents: [
+        { sku: `toiletPaper`, size: 1, qty: 1 },
+        { sku: `faceMask`, size: 1, qty: 2 },
     ],
 };
 
@@ -58,6 +68,42 @@ const mockResultStateTPFMHS3 = {
     ],
 };
 
+describe(`basket.slice internal functions`, () => {
+    test(`updatePackSize function`, () => {
+        expect(updatePackSize({ qty: 1, size: 1 }, [])).toEqual([{ qty: 1, size: 1 }]);
+
+        expect(updatePackSize({ qty: 1, size: 1 }, [{ qty: 1, size: 1 }])).toEqual([{ qty: 2, size: 1 }]);
+
+        expect(updatePackSize({ qty: 1, size: 1 }, [{ qty: 2, size: 1 }], false)).toEqual([{ qty: 1, size: 1 }]);
+
+        expect(
+            updatePackSize({ qty: 1, size: 2 }, [
+                { qty: 2, size: 1 },
+                { qty: 1, size: 2 },
+            ])
+        ).toEqual([
+            { qty: 2, size: 1 },
+            { qty: 2, size: 2 },
+        ]);
+
+        expect(
+            updatePackSize(
+                { qty: 1, size: 2 },
+                [
+                    { qty: 2, size: 1 },
+                    { qty: 1, size: 2 },
+                ],
+                false
+            )
+        ).toEqual([{ qty: 2, size: 1 }]);
+    });
+
+    test(`float function`, () => {
+        expect(float(2 * 0.175 + 0.85)).toEqual(1.2);
+        expect(float(0.35 + 0.175)).toEqual(0.525);
+    });
+});
+
 describe(`basket.slice reducer`, () => {
     test(`should handle initial state`, () => {
         expect(reducer(undefined, {})).toEqual(initialBasketState);
@@ -98,7 +144,53 @@ describe(`basket.slice reducer`, () => {
         ).toEqual(mockResultStateTPFMHS);
     });
 
-    test(`it should upodate items with multiple packSizes correctly`, () => {
+    test(`it should remove indiviudal items from the basket correctly`, () => {
+        expect(
+            reducer(mockResultStateTP, {
+                type: remove.type,
+                payload: {
+                    sku: `toiletPaper`,
+                    size: 1,
+                    qty: 1,
+                },
+            })
+        ).toEqual(initialBasketState);
+
+        expect(
+            reducer(mockResultStateTPFM, {
+                type: remove.type,
+                payload: {
+                    sku: `faceMask`,
+                    size: 1,
+                    qty: 1,
+                },
+            })
+        ).toEqual(mockResultStateTP);
+
+        expect(
+            reducer(mockResultStateTPFM2, {
+                type: remove.type,
+                payload: {
+                    sku: `faceMask`,
+                    size: 1,
+                    qty: 1,
+                },
+            })
+        ).toEqual(mockResultStateTPFM);
+
+        expect(
+            reducer(mockResultStateTPFMHS, {
+                type: removeUpdateCumulative.type,
+                payload: {
+                    sku: `handSanitizer`,
+                    size: 0.175,
+                    qty: 1,
+                },
+            })
+        ).toEqual(mockResultStateTPFM);
+    });
+
+    test(`it should update items with multiple packSizes correctly when adding`, () => {
         expect(
             reducer(mockResultStateTPFMHS, {
                 type: addUpdateCumulative.type,
@@ -121,69 +213,36 @@ describe(`basket.slice reducer`, () => {
             })
         ).toEqual(mockResultStateTPFMHS3);
     });
+
+    test(`it should update items with multiple packSizes correctly when removing`, () => {
+        expect(
+            reducer(mockResultStateTPFMHS3, {
+                type: removeUpdateCumulative.type,
+                payload: {
+                    sku: `handSanitizer`,
+                    size: 0.175,
+                    qty: 1,
+                },
+            })
+        ).toEqual(mockResultStateTPFMHS2);
+
+        expect(
+            reducer(mockResultStateTPFMHS2, {
+                type: removeUpdateCumulative.type,
+                payload: {
+                    sku: `handSanitizer`,
+                    size: 0.5,
+                    qty: 1,
+                },
+            })
+        ).toEqual(mockResultStateTPFMHS);
+    });
+
+    test(`it should empty the basket correctly`, () => {
+        expect(
+            reducer(mockResultStateTPFMHS3, {
+                type: resetBasket.type,
+            })
+        ).toEqual(initialBasketState);
+    });
 });
-
-//             basket: {
-//                 contents: [
-//                     { sku: `faceMask`, size: 1, qty: 1 },
-//                     { sku: `toiletPaper`, size: 1, qty: 1 },
-//                 ],
-//             },
-//         },
-//         { type: `basket/addUpdateCumulative`, payload: { sku: `handSanitizer`, size: 0.175, qty: 1 } }
-//     );
-//     expect(state).toEqual({
-//         basket: {
-//             contents: [
-//                 { sku: `faceMask`, size: 1, qty: 1 },
-//                 { sku: `toiletPaper`, size: 1, qty: 1 },
-//                 { sku: `handSanitizer`, size: 0.175, qty: 1, packSizes: [{ size: 0.175, qty: 1 }] },
-//             ],
-//         },
-//         stock: {
-//             items: [
-//                 { sku: `faceMask`, stock: [{ size: 1, qty: 99 }] },
-//                 { sku: `toiletPaper`, stock: [{ size: 1, qty: 99 }] },
-//                 {
-//                     sku: `handSanitizer`,
-//                     stock: [
-//                         { size: 0.175, qty: 24 },
-//                         { size: 0.25, qty: 25 },
-//                         { size: 0.5, qty: 25 },
-//                         { size: 1, qty: 25 },
-//                     ],
-//                 },
-//             ],
-//         },
-//     });
-// });
-
-// {
-//     basket: { contents: [{ sku: `faceMask`, size: 1, qty: 1 }] },
-// },
-// { type: `basket/add`, payload: { sku: `toiletPaper`, size: 1, qty: 1 } }
-
-// expect(state).toEqual({
-//         basket: {
-//             contents: [
-//                 { sku: `faceMask`, size: 1, qty: 1 },
-//                 { sku: `toiletPaper`, size: 1, qty: 1 },
-//             ],
-//         },
-//         stock: {
-//             items: [
-//                 { sku: `faceMask`, stock: [{ size: 1, qty: 99 }] },
-//                 { sku: `toiletPaper`, stock: [{ size: 1, qty: 99 }] },
-//                 {
-//                     sku: `handSanitizer`,
-//                     stock: [
-//                         { size: 0.175, qty: 25 },
-//                         { size: 0.25, qty: 25 },
-//                         { size: 0.5, qty: 25 },
-//                         { size: 1, qty: 25 },
-//                     ],
-//                 },
-//             ],
-//         },
-//     });
-// });
