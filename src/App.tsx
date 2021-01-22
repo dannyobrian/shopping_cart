@@ -13,11 +13,11 @@ const App = (): JSX.Element => {
                     <Row className="d-flex w-100 justify-content-end">
                         <Basket />
                     </Row>
-                    <Row>
+                    <Row className="mt-4">
                         <Col>
                             <Catalog />
                         </Col>
-                        <Col sm md="4">
+                        <Col sm="5" md="4">
                             <Receipt />
                         </Col>
                     </Row>
