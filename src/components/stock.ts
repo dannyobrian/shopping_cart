@@ -5,6 +5,7 @@ export type PackSize = {
 
 export type StockItem = PackSize & {
     sku: string;
+    packSizes?: PackSize[];
 };
 
 export type StockUnit = {

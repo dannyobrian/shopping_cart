@@ -1,29 +1,56 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StockItem, Stock, StockUnit } from '../../components';
+import { StockItem, StockUnit } from '../../components';
 
 export type StockStatePart = {
     stock: StockState;
 };
 
 export type StockState = {
-    stock: StockUnit[];
+    items: StockUnit[];
 };
 
-const initialState: StockState = {
-    stock: Stock,
-};
-
-const performStockAction = (state: StockState, payload: StockItem, add = true) => {
-    const increment: number = add ? 1 : -1;
-    const { sku, size, qty } = payload;
-    return state.stock.map((item) => {
-        if (item.sku === sku) {
-            item.stock = item.stock.map((pack) =>
-                pack.size === size ? { ...pack, qty: pack.qty + qty * increment } : pack
-            );
-        }
-        return item;
-    });
+export const initialState: StockState = {
+    items: [
+        {
+            sku: `faceMask`,
+            stock: [
+                {
+                    size: 1,
+                    qty: 100,
+                },
+            ],
+        },
+        {
+            sku: `toiletPaper`,
+            stock: [
+                {
+                    size: 1,
+                    qty: 100,
+                },
+            ],
+        },
+        {
+            sku: `handSanitizer`,
+            stock: [
+                {
+                    size: 0.175,
+                    qty: 25,
+                },
+                {
+                    size: 0.25,
+                    qty: 25,
+                },
+                {
+                    size: 0.5,
+                    qty: 25,
+                },
+                {
+                    size: 1,
+                    qty: 25,
+                },
+            ],
+        },
+    ],
 };
 
 const stockSlice = createSlice({
@@ -31,14 +58,28 @@ const stockSlice = createSlice({
     initialState,
     reducers: {
         returnStock: (state, { payload }: PayloadAction<StockItem>) => {
-            state.stock = performStockAction(state, payload);
+            const { sku, size, qty } = payload;
+            state.items.map(item => {
+                if (item.sku === sku) {
+                    item.stock = item.stock.map(pack => (pack.size === size ? { ...pack, qty: pack.qty + qty } : pack));
+                }
+                return item;
+            });
         },
         removeStock: (state, { payload }: PayloadAction<StockItem>) => {
-            state.stock = performStockAction(state, payload, false);
+            const { sku, size, qty } = payload;
+            state.items = state.items.map(item => {
+                if (item.sku === sku) {
+                    item.stock = item.stock.map(pack => (pack.size === size ? { ...pack, qty: pack.qty - qty } : pack));
+                }
+                return item;
+            });
         },
+        resetStock: state => ({
+            ...initialState,
+        }),
     },
 });
 
-const { reducer, actions } = stockSlice;
-const { returnStock, removeStock } = actions;
-export { reducer as StockReducer, returnStock, removeStock };
+export const { returnStock, removeStock, resetStock } = stockSlice.actions;
+export default stockSlice.reducer;

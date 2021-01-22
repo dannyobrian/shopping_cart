@@ -1,0 +1,19 @@
+.receipt-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .receipt-row-title-full {
+        min-width: 100%;
+    }
+    &.separator {
+        width: 100%;
+        border-bottom: 2px dashed #000;
+        margin: 10px 1px;
+    }
+    &.sub-separator {
+        width: 30%;
+        border-bottom: 2px dashed #000;
+        margin: 10px 1px;
+    }
+}

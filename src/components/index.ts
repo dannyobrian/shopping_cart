@@ -1,5 +1,5 @@
-export * from './basket';
+export * from './basket/basket';
 export * from './catalog';
-export * from './receipt';
+export * from './receipt/receipt';
 export * from './stock';
 export * from './products';
