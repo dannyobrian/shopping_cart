@@ -1,3 +1,9 @@
+.receipt {
+    font-size: 0.85rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 800;
+}
+
 .receipt-row {
     width: 100%;
     display: flex;
@@ -8,12 +14,12 @@
     }
     &.separator {
         width: 100%;
-        border-bottom: 2px dashed #000;
+        border-bottom: 2px dashed rgba(0, 0, 0, 1);
         margin: 10px 1px;
     }
     &.sub-separator {
         width: 30%;
-        border-bottom: 2px dashed #000;
+        border-bottom: 2px dashed rgba(0, 0, 0, 1);
         margin: 10px 1px;
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Receipt } from '../components';
 import { Provider } from 'react-redux';
 import store from '../store';
@@ -11,4 +11,14 @@ test(`renders Receipt component`, () => {
         </Provider>
     );
     expect(container.getElementsByClassName(`receipt`)).toHaveLength(1);
+});
+
+test(`renders Receipt component`, () => {
+    render(
+        <Provider store={store}>
+            <Receipt />
+        </Provider>
+    );
+    expect(screen.getByText(/Subtotal/)).toBeInTheDocument();
+    expect(screen.getByText(/Total to pay/)).toBeInTheDocument();
 });

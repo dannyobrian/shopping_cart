@@ -134,14 +134,19 @@ export const Receipt = () => {
                         )}
                     </div>
                 ))}
-                <div className="receipt-row sub-separator" />
+                {receiptLineItems.length > 0 && <div className="receipt-row sub-separator" />}
                 <ReceiptRow item={{ name: `Subtotal`, value: formatAmount(subTotal) }} />
-                <div className="receipt-row sub-separator" />
-                <ReceiptRow item={{ name: `Subtotal`, value: `` }} />
-                {savings.map((saving, index) => (
-                    <ReceiptRow key={`saving${index}`} item={saving} />
-                ))}
-                <ReceiptRow item={{ name: `Total Savings`, value: formatAmount(totalSavings) }} />
+                {savings.length > 0 && (
+                    <>
+                        <ReceiptRow item={{ name: `Savings`, value: `` }} />
+                        <div className="receipt-row sub-separator" />
+                    </>
+                )}
+                {savings.length > 0 &&
+                    savings.map((saving, index) => <ReceiptRow key={`saving${index}`} item={saving} />)}
+                {savings.length > 0 && (
+                    <ReceiptRow item={{ name: `Total Savings`, value: formatAmount(totalSavings) }} />
+                )}
                 <div className="receipt-row separator" />
                 <ReceiptRow item={{ name: `Total to pay`, value: formatAmount(netTotal) }} />
             </Card.Body>
