@@ -1,3 +1,4 @@
 .eslintrc.js
+**/.eslintcache
 node_modules
 reportWebVitals.js
