@@ -25,7 +25,7 @@ export const Catalog = () => {
     };
 
     return (
-        <div>
+        <div className="catalog">
             {items ? (
                 items.map(item => (
                     <CatalogItem

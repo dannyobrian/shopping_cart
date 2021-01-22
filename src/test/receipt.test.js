@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Receipt } from '../../components';
+import { Receipt } from '../components';
 import { Provider } from 'react-redux';
-import store from '../../store';
+import store from '../store';
 
 test(`renders Receipt component`, () => {
     const { container } = render(

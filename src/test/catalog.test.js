@@ -1,9 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Catalog } from '../../components';
-import store from '../../store';
-import { resetStock } from '../../store/slices/stock.slice';
+import { Catalog } from '../components';
+import store from '../store';
+import { resetStock } from '../store/slices/stock.slice';
 
 beforeEach(() => {
     render(

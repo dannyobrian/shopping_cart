@@ -1,9 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
-import { Basket } from '../../components';
-import store from '../../store';
-import { resetBasket } from '../../store/slices/basket.slice';
+import { Basket } from '../components';
+import store from '../store';
+import { resetBasket } from '../store/slices/basket.slice';
 
 test(`renders learn react link`, () => {
     store.dispatch(resetBasket());

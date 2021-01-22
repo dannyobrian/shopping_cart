@@ -10,7 +10,7 @@ const App = (): JSX.Element => {
         <Provider store={store}>
             <div className="App p-4">
                 <Container>
-                    <Row className="d-flex w-100 justify-content-end">
+                    <Row className="basketRow d-flex w-100 justify-content-end">
                         <Basket />
                     </Row>
                     <Row className="mt-4">

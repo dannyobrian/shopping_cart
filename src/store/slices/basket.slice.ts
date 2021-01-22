@@ -9,17 +9,16 @@ type BasketState = {
     contents: StockItem[];
 };
 
-const initialState: BasketState = {
+export const initialBasketState: BasketState = {
     contents: [],
 };
 
 /* 
 //example state 
 state = [
-    {sku: 'toiletPaper', size: 1, qty: 1}
-    {sku: 'faceMask', size: 1, qty: 1}
-    {sku: 'handSanitizer', size: 0.25, qty: 1},
-    {sku: 'handSanitizer', size: 0.5, qty: 1}
+    { sku: `faceMask`, size: 1, qty: 1 },
+    { sku: `toiletPaper`, size: 1, qty: 1 },
+    { sku: `handSanitizer`, size: 0.175, qty: 1, packSizes: [{ size: 0.175, qty: 1 }] },
  ]
  */
 
@@ -47,7 +46,7 @@ const updatePackSize = (item: StockItem, packSizes: PackSize[], add = true): Pac
 
 const basketSlice = createSlice({
     name: `basket`,
-    initialState,
+    initialState: initialBasketState,
     reducers: {
         add: (state, { payload }: PayloadAction<StockItem>) => {
             const { sku, size, qty } = payload;
@@ -72,7 +71,8 @@ const basketSlice = createSlice({
                     return index === arrayIndex && item.packSizes
                         ? {
                               sku,
-                              size: size * qty + item.size,
+                              // cludge to eradicate the dreaded 00000000000001 precsiion error when adding floats
+                              size: Number((size * qty + item.size).toPrecision(3)),
                               qty: 1,
                               packSizes: updatePackSize(payload, item.packSizes, true),
                           }
@@ -101,7 +101,7 @@ const basketSlice = createSlice({
                             ...acc,
                             {
                                 sku,
-                                size: curr.size - size,
+                                size: Number((curr.size - size).toPrecision(3)),
                                 qty,
                                 packSizes: updatePackSize(payload, curr.packSizes, false),
                             },
@@ -113,7 +113,7 @@ const basketSlice = createSlice({
             }, []);
         },
         resetBasket: () => ({
-            ...initialState,
+            ...initialBasketState,
         }),
     },
 });
