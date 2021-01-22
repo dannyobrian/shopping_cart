@@ -4,6 +4,7 @@ export type Item = {
     packSizes: number[];
     display: `cumulative` | `discrete`;
     packSizeID?: string;
+    packSizeSuffix?: string;
     priceBreak?: number;
     discount?: number;
     discountID?: string;
@@ -18,6 +19,7 @@ export const Products: SKUList = {
         name: `Face Mask`,
         unitValue: 2.5,
         packSizes: [1],
+        packSizeSuffix: `each`,
         priceBreak: 2,
         discount: 0.2,
         discountID: `(2 for £4)`,
@@ -27,6 +29,7 @@ export const Products: SKUList = {
         name: `Toilet Paper`,
         unitValue: 0.65,
         packSizes: [1],
+        packSizeSuffix: `per roll`,
         priceBreak: 6,
         discount: 0.1667,
         discountID: `(6 for the price of 5)`,
@@ -37,6 +40,7 @@ export const Products: SKUList = {
         unitValue: 19.99,
         packSizes: [0.175, 0.25, 0.5, 1],
         packSizeID: `l`,
+        packSizeSuffix: `per litre`,
         display: `cumulative`,
     },
 };
