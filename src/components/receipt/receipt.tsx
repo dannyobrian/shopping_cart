@@ -43,8 +43,7 @@ const subTotal = (basketContents: StockItem[]): number =>
         return acc + product.unitValue * curr.qty;
     }, 0);
 
-const totalSavings = (basketContents: StockItem[]): number =>
-    (subTotal(basketContents) - netTotal(basketContents)) * -1;
+const totalSavings = (basketContents: StockItem[]): number => (subTotal(basketContents) - netTotal(basketContents)) * -1;
 
 const formatAmount = (val: number): string => val.toFixed(2);
 
@@ -159,9 +158,7 @@ export const Receipt = () => {
                         {savingsItems.map((saving, index) => (
                             <ReceiptRow key={`saving${index}`} item={saving} />
                         ))}
-                        <ReceiptRow
-                            item={{ name: `Total Savings`, value: formatAmount(totalSavings(basketContents)) }}
-                        />
+                        <ReceiptRow item={{ name: `Total Savings`, value: formatAmount(totalSavings(basketContents)) }} />
                     </>
                 )}
                 <div className="receipt-row separator" />
