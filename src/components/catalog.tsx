@@ -4,8 +4,7 @@ import { RootState } from '../store';
 import { Products } from './products';
 import { CatalogItem } from './catalog-item';
 import { add, addUpdateCumulative } from '../store/slices/basket.slice';
-import { removeStock } from '../store/slices/stock.slice';
-import { StockItem } from '../store/slices/stock.slice';
+import { StockItem, removeStock } from '../store/slices/stock.slice';
 
 const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
