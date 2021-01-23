@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PackSize, StockItem } from '../../components/stock';
+import { PackSize, StockItem } from '../../store/slices/stock.slice';
 
 export type BasketStatePart = {
     basket: BasketState;

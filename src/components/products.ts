@@ -32,7 +32,7 @@ export const Products: SKUList = {
         packSizeSuffix: `per roll`,
         priceBreak: 6,
         discount: 0.1667,
-        discountID: `(6 for the price of 5)`,
+        discountID: `(6 for price of 5)`,
         display: `discrete`,
     },
     handSanitizer: {

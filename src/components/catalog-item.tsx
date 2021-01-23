@@ -29,9 +29,11 @@ export const CatalogItem = ({
     const [error, setError] = useState<boolean>(false);
 
     const handlePackSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        if (e.currentTarget.value) {
+        if (!isNaN(Number(e.currentTarget.value))) {
             setError(false);
             setPackSizeIndex(Number(e.currentTarget.value));
+        } else {
+            setError(true);
         }
     };
 
@@ -48,7 +50,7 @@ export const CatalogItem = ({
                                 {` ${packSizeSuffix}`}
                             </Card.Text>
                             {packSizes.length > 1 && (
-                                <Form.Control as="select" onChange={handlePackSizeChange}>
+                                <Form.Control as="select" data-testid="dropdown" onChange={handlePackSizeChange}>
                                     <option>Select size:</option>
                                     {packSizes.map((item, index) => (
                                         <option value={index} key={`sizeOption${index}`}>

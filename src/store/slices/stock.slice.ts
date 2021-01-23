@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StockItem, StockUnit } from '../../components';
 
 export type StockStatePart = {
     stock: StockState;
@@ -7,6 +6,21 @@ export type StockStatePart = {
 
 export type StockState = {
     items: StockUnit[];
+};
+
+export type PackSize = {
+    size: number;
+    qty: number;
+};
+
+export type StockItem = PackSize & {
+    sku: string;
+    packSizes?: PackSize[];
+};
+
+export type StockUnit = {
+    sku: string;
+    stock: PackSize[];
 };
 
 export const initialState: StockState = {

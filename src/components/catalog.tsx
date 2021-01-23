@@ -5,7 +5,7 @@ import { Products } from './products';
 import { CatalogItem } from './catalog-item';
 import { add, addUpdateCumulative } from '../store/slices/basket.slice';
 import { removeStock } from '../store/slices/stock.slice';
-import { StockItem } from './stock';
+import { StockItem } from '../store/slices/stock.slice';
 
 const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
@@ -26,18 +26,9 @@ export const Catalog = () => {
 
     return (
         <div className="catalog">
-            {items ? (
-                items.map(item => (
-                    <CatalogItem
-                        sku={item.sku}
-                        onButtonClick={onButtonClickHandler}
-                        key={`${item.sku}_catalogItem`}
-                        {...Products[item.sku]}
-                    />
-                ))
-            ) : (
-                <div>No stock found</div>
-            )}
+            {items?.map(item => (
+                <CatalogItem sku={item.sku} onButtonClick={onButtonClickHandler} key={`${item.sku}_catalogItem`} {...Products[item.sku]} />
+            ))}
         </div>
     );
 };
