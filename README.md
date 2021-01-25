@@ -1,7 +1,15 @@
 # React/Redux Shopping cart 
-A simple web app that allows a user to add supermarket items to a basket and remove items from the basket.
+A simple web app that allows a user to add supermarket items to a basket and remove items from the basket. Inspired by [Pragmatic Dave's Supermarket Kata](http://codekata.com/kata/kata01-supermarket-pricing/)
 
-Automatically calculates and dusplays the costs of the items and applicable dsiscounts and the total amount to pay in a receipt sidebar.
+Automatically calculates and displays the costs of the items and applicable dsiscounts and the total amount to pay in a receipt sidebar.
+
+Technologies used
+* React
+* @reduxjs/toolkit
+* Typescript
+* SASS
+* react-bootstrap
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
