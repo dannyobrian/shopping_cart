@@ -1,4 +1,7 @@
-# Getting Started with Create React App
+# React/Redux Shopping cart 
+A simple web app that allows a user to add supermarket items to a basket and remove items from the basket.
+
+Automatically calculates and dusplays the costs of the items and applicable dsiscounts and the total amount to pay in a receipt sidebar.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
